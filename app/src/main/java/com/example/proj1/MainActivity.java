@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.net.URL;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
     private EditText editText;
     private TextView textView;
     private int pos = 0;
@@ -29,7 +29,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         editText = findViewById(R.id.editText);
         textView = findViewById(R.id.textView);
-        textView.setOnClickListener(this);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = textView.getText().toString();
+                try {
+                    text = text.substring(-pos);
+                    editText.setText(editText.getText() + text);
+                } catch (Exception e) {
+                    editText.setText(editText.getText() + " " + text);
+                }
+                editText.setSelection(editText.getText().length());
+            }
+        });
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -86,19 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == textView) {
-            String text = textView.getText().toString();
-            try {
-                text = text.substring(-pos);
-                editText.setText(editText.getText() + text);
-            } catch (Exception e) {
-                editText.setText(editText.getText() + " " + text);
-            }
-            editText.setSelection(editText.getText().length());
-        }
-    }
+
 
 
 }
